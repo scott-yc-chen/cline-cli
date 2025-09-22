@@ -1,0 +1,434 @@
+---
+title: "Cline CLI Usage Guide"
+description: "Complete guide to using the Cline CLI terminal interface"
+---
+
+# Cline CLI Usage Guide
+
+A comprehensive guide to using Cline's command-line interface for AI-powered coding assistance.
+
+## Installation & Setup
+
+### Prerequisites
+- Node.js 18 or higher
+- npm or yarn package manager
+- Terminal with modern features (iTerm2, Windows Terminal, etc.)
+
+### Installation
+```bash
+# From the repository
+cd cline-cli/cli
+npm install
+npm run build
+
+# Link for global usage
+npm link
+```
+
+### Initial Configuration
+```bash
+# Set your AI model and API key
+cline config --model claude-3-sonnet
+cline config --api-key your-api-key-here
+
+# Initialize in a project directory
+cd your-project
+cline init
+```
+
+## Command Line Interface
+
+### Basic Commands
+
+#### Interactive Chat Mode (Default)
+```bash
+# Start interactive session
+cline
+
+# Start with specific context
+cline --context "web development project"
+
+# Resume previous session
+cline --resume
+```
+
+#### Single Command Mode
+```bash
+# Execute one-off commands
+cline "implement user authentication with JWT"
+cline "refactor this component to use hooks"
+cline "add tests for the payment module"
+
+# With file context
+cline "fix the bug in src/auth.ts" --file src/auth.ts
+```
+
+#### Configuration Commands
+```bash
+# View current configuration
+cline config
+
+# Set AI model
+cline config --model claude-3-sonnet
+cline config --model gpt-4
+cline config --model gemini-pro
+
+# Set API key
+cline config --api-key sk-your-key-here
+
+# Set temperature (creativity level)
+cline config --temperature 0.7
+
+# Enable verbose logging
+cline config --verbose true
+```
+
+#### Project Management
+```bash
+# Initialize Cline in current directory
+cline init
+
+# View session status
+cline status
+
+# View chat history
+cline history
+
+# Clear chat history
+cline clear
+
+# Export conversation
+cline export --format json --output conversation.json
+```
+
+## Terminal User Interface
+
+The Cline CLI provides a rich, multi-view terminal interface powered by Ink React components.
+
+### Main Navigation
+
+| Key Combination | Action |
+|---|---|
+| `Ctrl+1` | Switch to Chat Interface |
+| `Ctrl+2` | Switch to File Explorer |
+| `Ctrl+3` | Switch to Diff Viewer |
+| `Ctrl+4` | Switch to Task Manager |
+| `Ctrl+5` | Switch to Settings |
+| `Ctrl+H` | Show/Hide Help Overlay |
+| `Ctrl+C` | Exit Application |
+
+### Chat Interface (Ctrl+1)
+
+The primary interface for conversing with AI assistants.
+
+#### Features
+- **Real-time Chat**: Interactive conversation with AI models
+- **Message History**: Scroll through conversation history
+- **Code Highlighting**: Syntax highlighting in code blocks
+- **Copy Support**: Copy AI responses or code snippets
+
+#### Navigation
+| Key | Action |
+|---|---|
+| `↑↓` | Navigate message history |
+| `Enter` | Send message |
+| `Ctrl+L` | Clear screen |
+| `Ctrl+C` | Copy current message |
+
+#### Example Usage
+```
+You: implement a REST API endpoint for user registration
+AI: I'll help you implement a user registration endpoint...
+
+You: add input validation
+AI: I'll add comprehensive input validation...
+```
+
+### File Explorer (Ctrl+2)
+
+Browse and manage project files directly in the terminal.
+
+#### Features
+- **Directory Navigation**: Browse project structure
+- **File Preview**: View file contents
+- **File Operations**: Create, edit, delete files
+- **Project Detection**: Automatic detection of project types
+- **Hidden Files**: Toggle visibility of hidden files
+
+#### Navigation
+| Key | Action |
+|---|---|
+| `↑↓` | Navigate files/directories |
+| `Enter` | Open file or enter directory |
+| `Backspace` | Go to parent directory |
+| `Space` | Preview file content |
+| `H` | Toggle hidden files |
+| `R` | Refresh directory |
+| `N` | Create new file |
+| `D` | Delete file/directory |
+
+#### File Type Icons
+- 📁 Directories
+- 📄 Text files
+- ⚙️ Configuration files
+- 🔧 Build files
+- 📦 Package files
+- 🎨 Image files
+
+### Diff Viewer (Ctrl+3)
+
+Review and manage code changes with visual diff display.
+
+#### Features
+- **Side-by-side Diffs**: Clear visual representation of changes
+- **Syntax Highlighting**: Color-coded additions and deletions
+- **Apply/Reject**: Selectively apply or reject changes
+- **File Navigation**: Browse multiple files with changes
+
+#### Navigation
+| Key | Action |
+|---|---|
+| `↑↓` | Navigate through diffs |
+| `Enter` | View detailed diff |
+| `A` | Apply selected diff |
+| `R` | Reject selected diff |
+| `C` | Clear all diffs |
+| `G` | Generate sample diff (demo) |
+
+#### Diff Display Format
+```
++ Added lines (green)
+- Removed lines (red)
+  Unchanged lines (gray)
+```
+
+### Task Manager (Ctrl+4)
+
+Monitor AI task progress and execution status.
+
+#### Features
+- **Progress Tracking**: Visual progress bars for active tasks
+- **Task Hierarchy**: Support for subtasks and dependencies
+- **Status Monitoring**: Real-time status updates
+- **Error Handling**: Clear error reporting and recovery options
+
+#### Navigation
+| Key | Action |
+|---|---|
+| `↑↓` | Navigate tasks |
+| `Enter` | View task details |
+| `S` | Stop running task |
+| `C` | Clear completed tasks |
+| `T` | Toggle completed tasks visibility |
+| `N` | Create new task (demo) |
+| `R` | Refresh tasks |
+
+#### Task Status Icons
+- ⏳ Pending
+- 🔄 In Progress
+- ✅ Completed
+- ❌ Failed
+
+### Settings (Ctrl+5)
+
+Configure AI models, API keys, and UI preferences.
+
+#### Available Settings
+
+##### AI Configuration
+- **Model Selection**: Choose between Claude, GPT, Gemini models
+- **API Key**: Set your provider API key
+- **Temperature**: Control creativity level (0.0-1.0)
+
+##### UI Preferences
+- **Theme**: Dark, light, or auto theme
+- **Animations**: Enable/disable UI animations
+- **Verbose Logging**: Detailed debug output
+
+##### Workspace Settings
+- **Auto Save**: Automatically save changes
+- **Max File Size**: Maximum file size to process
+- **Telemetry**: Usage data collection preferences
+
+#### Navigation
+| Key | Action |
+|---|---|
+| `↑↓` | Navigate settings |
+| `Enter` or `E` | Edit setting |
+| `T` | Toggle boolean settings |
+| `D` | Reset setting to default |
+| `S` | Save all changes |
+| `R` | Reset all to defaults |
+
+## Advanced Usage
+
+### Working with Large Projects
+
+#### Project Context
+```bash
+# Analyze entire codebase
+cline "analyze the architecture of this project"
+
+# Focus on specific directories
+cline "review the components in src/ui/" --path src/ui
+
+# Exclude certain files
+cline "refactor the API layer" --exclude "*.test.js,node_modules"
+```
+
+#### File Management
+```bash
+# Process multiple files
+cline "update all React components to use TypeScript" --pattern "*.jsx"
+
+# Backup before changes
+cline "refactor authentication system" --backup
+
+# Dry run mode
+cline "optimize database queries" --dry-run
+```
+
+### AI Model Optimization
+
+#### Model Selection Guidelines
+- **Claude Sonnet**: Best for complex reasoning and code generation
+- **Claude Haiku**: Faster responses for simple tasks
+- **GPT-4**: Strong general programming capabilities
+- **GPT-3.5 Turbo**: Cost-effective for basic tasks
+
+#### Temperature Settings
+- **0.0-0.3**: Deterministic, focused responses
+- **0.4-0.7**: Balanced creativity and accuracy
+- **0.8-1.0**: High creativity for brainstorming
+
+### Session Management
+
+#### Conversation Persistence
+```bash
+# Save conversation
+cline export --format markdown --output session-$(date +%Y%m%d).md
+
+# Load previous session
+cline resume --session session-20241201.json
+
+# Set session name
+cline --session-name "api-development"
+```
+
+#### Context Management
+```bash
+# Set project context
+cline context --add "This is a React TypeScript project using Vite"
+
+# Add file context
+cline context --file src/types.ts
+
+# Clear context
+cline context --clear
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### API Key Problems
+```bash
+# Verify API key is set
+cline config | grep apiKey
+
+# Test API connection
+cline "test connection" --verbose
+
+# Reset API key
+cline config --api-key ""
+```
+
+#### Performance Issues
+```bash
+# Enable verbose logging
+cline config --verbose true
+
+# Check system resources
+cline status --system
+
+# Clear cache
+cline cache --clear
+```
+
+#### Display Problems
+```bash
+# Check terminal compatibility
+echo $TERM
+
+# Force color mode
+cline --color always
+
+# Disable animations
+cline config --animations false
+```
+
+### Error Messages
+
+#### Authentication Errors
+- **"Invalid API key"**: Check your API key configuration
+- **"Rate limit exceeded"**: Wait before making more requests
+- **"Model not available"**: Verify model name spelling
+
+#### File System Errors
+- **"Permission denied"**: Check file/directory permissions
+- **"File not found"**: Verify file paths are correct
+- **"Disk full"**: Check available disk space
+
+#### Network Errors
+- **"Connection timeout"**: Check internet connectivity
+- **"SSL certificate error"**: Update certificates or use `--ignore-ssl`
+
+## Tips and Best Practices
+
+### Effective Prompting
+1. **Be Specific**: "Add error handling to the login function" vs "fix the code"
+2. **Provide Context**: Include relevant file names and line numbers
+3. **Iterative Refinement**: Build on previous responses
+4. **Use Examples**: Show desired output format when possible
+
+### Project Organization
+1. **Initialize Early**: Run `cline init` in new projects
+2. **Regular Sessions**: Use consistent session names for ongoing work
+3. **Export Important Conversations**: Save breakthrough solutions
+4. **Context Management**: Keep relevant files in context
+
+### Performance Optimization
+1. **Choose Appropriate Models**: Use faster models for simple tasks
+2. **Limit Context Size**: Focus on relevant files only
+3. **Use Caching**: Enable response caching for repeated queries
+4. **Monitor Usage**: Track API usage and costs
+
+## Keyboard Shortcuts Reference
+
+### Global Shortcuts
+| Shortcut | Action |
+|---|---|
+| `Ctrl+1` | Chat Interface |
+| `Ctrl+2` | File Explorer |
+| `Ctrl+3` | Diff Viewer |
+| `Ctrl+4` | Task Manager |
+| `Ctrl+5` | Settings |
+| `Ctrl+H` | Help Overlay |
+| `Ctrl+C` | Exit |
+
+### Context-Specific Shortcuts
+| View | Shortcut | Action |
+|---|---|---|
+| Chat | `Ctrl+L` | Clear screen |
+| Chat | `Ctrl+C` | Copy message |
+| Files | `H` | Toggle hidden files |
+| Files | `R` | Refresh |
+| Files | `N` | New file |
+| Diff | `A` | Apply diff |
+| Diff | `R` | Reject diff |
+| Tasks | `S` | Stop task |
+| Tasks | `C` | Clear completed |
+| Settings | `S` | Save all |
+| Settings | `T` | Toggle boolean |
+
+This guide covers the essential usage patterns for the Cline CLI. For more advanced features and latest updates, refer to the main documentation and release notes.
