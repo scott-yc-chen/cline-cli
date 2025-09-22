@@ -70,14 +70,11 @@ describe("CLI Host Integration (Phase 2)", () => {
 			const nonexistentFile = path.join(tempDir, "nonexistent.txt")
 
 			try {
-				await hostBridge.windowClient
-					.showTextDocument({
-						path: nonexistentFile,
-					})(
-						// Should not reach here
-						false,
-					)
-					.should.be.true()
+				const _result = await hostBridge.windowClient.showTextDocument({
+					path: nonexistentFile,
+				})
+				// Should not reach here
+				false.should.be.true()
 			} catch (error: any) {
 				error.should.exist()
 				error.message.should.be.a.String()

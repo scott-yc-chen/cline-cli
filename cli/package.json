@@ -1,60 +1,62 @@
 {
-  "name": "cline-cli",
-  "version": "1.0.0",
-  "description": "Command-line interface for Cline AI coding assistant",
-  "main": "dist/index.js",
-  "bin": {
-    "cline": "dist/index.js"
-  },
-  "scripts": {
-    "dev": "tsx src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "lint": "biome lint src",
-    "format": "biome format src --write",
-    "type-check": "tsc --noEmit",
-    "test": "mocha",
-    "test:watch": "mocha --watch"
-  },
-  "keywords": [
-    "cline",
-    "cli",
-    "ai",
-    "coding",
-    "assistant",
-    "terminal"
-  ],
-  "author": "Cline Bot Inc.",
-  "license": "Apache-2.0",
-  "dependencies": {
-    "ink": "^4.4.1",
-    "react": "^18.2.0",
-    "execa": "^9.5.2",
-    "fs-extra": "^11.1.1",
-    "chalk": "^5.3.0",
-    "commander": "^11.1.0",
-    "diff": "^5.2.0",
-    "yaml": "^2.3.4",
-    "@types/react": "^18.2.0",
-    "clone-deep": "^4.0.1",
-    "ulid": "^2.4.0",
-    "zod": "^3.24.2"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.1.4",
-    "@types/node": "20.x",
-    "@types/fs-extra": "^11.0.4",
-    "@types/diff": "^5.2.1",
-    "typescript": "^5.4.5",
-    "tsx": "^4.7.0",
-    "ts-node": "^10.9.1",
-    "mocha": "^10.7.3",
-    "should": "^13.2.3",
-    "@types/mocha": "^10.0.7",
-    "@types/should": "^13.0.0",
-    "ink-testing-library": "^3.0.0"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  }
+	"name": "cline-cli",
+	"version": "1.0.0",
+	"description": "Command-line interface for Cline AI coding assistant",
+	"type": "module",
+	"main": "dist/index.js",
+	"bin": {
+		"cline": "dist/index.js"
+	},
+	"scripts": {
+		"dev": "tsx src/index.ts",
+		"build": "tsc",
+		"start": "node dist/index.js",
+		"lint": "biome lint src",
+		"format": "biome format src --write",
+		"type-check": "tsc --noEmit",
+		"test": "mocha",
+		"test:watch": "mocha --watch"
+	},
+	"keywords": [
+		"cline",
+		"cli",
+		"ai",
+		"coding",
+		"assistant",
+		"terminal"
+	],
+	"author": "Cline Bot Inc.",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"@inkjs/ui": "^2.0.0",
+		"@types/react": "^18.2.0",
+		"chalk": "^5.3.0",
+		"clone-deep": "^4.0.1",
+		"commander": "^11.1.0",
+		"diff": "^5.2.0",
+		"execa": "^9.5.2",
+		"fs-extra": "^11.1.1",
+		"ink": "^5.0.1",
+		"react": "^18.2.0",
+		"ulid": "^2.4.0",
+		"yaml": "^2.3.4",
+		"zod": "^3.24.2"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.1.4",
+		"@types/diff": "^5.2.1",
+		"@types/fs-extra": "^11.0.4",
+		"@types/mocha": "^10.0.7",
+		"@types/node": "20.x",
+		"@types/should": "^13.0.0",
+		"ink-testing-library": "^3.0.0",
+		"mocha": "^10.7.3",
+		"should": "^13.2.3",
+		"ts-node": "^10.9.1",
+		"tsx": "^4.7.0",
+		"typescript": "^5.4.5"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	}
 }

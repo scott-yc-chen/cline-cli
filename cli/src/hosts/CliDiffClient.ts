@@ -279,7 +279,7 @@ export class CliDiffClient implements DiffServiceClientInterface {
 	/**
 	 * Closes all open diffs
 	 */
-	async closeAllDiffs(request: proto.host.CloseAllDiffsRequest): Promise<proto.host.CloseAllDiffsResponse> {
+	async closeAllDiffs(_request: proto.host.CloseAllDiffsRequest): Promise<proto.host.CloseAllDiffsResponse> {
 		const openCount = this.openDocuments.size
 		this.openDocuments.clear()
 
@@ -307,6 +307,22 @@ export class CliDiffClient implements DiffServiceClientInterface {
 		}
 
 		return { success: true }
+	}
+
+	/**
+	 * Create a diff from original and modified content
+	 */
+	async createDiff(options: { original: string; modified: string; filename: string }): Promise<void> {
+		const { original, modified, filename } = options
+
+		this.displayMessage(`🔄 Creating diff for ${filename}`)
+
+		// Store the modified content in our in-memory storage
+		const filePath = this.resolveFilePath(filename)
+		this.openDocuments.set(filePath, modified)
+
+		// Show the diff in the terminal
+		this.displayDiff(original, modified, filename)
 	}
 
 	/**

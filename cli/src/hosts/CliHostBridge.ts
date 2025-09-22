@@ -15,7 +15,6 @@ export class CliHostBridge implements HostBridgeClientProvider {
 	public readonly diffClient: CliDiffClient
 
 	private cwd: string
-	private outputHandler?: (message: string, type?: "info" | "error" | "warning") => void
 
 	constructor(cwd?: string) {
 		this.cwd = cwd || process.cwd()
@@ -51,5 +50,54 @@ export class CliHostBridge implements HostBridgeClientProvider {
 		this.cwd = cwd
 		this.workspaceClient.setCurrentWorkingDirectory(cwd)
 		this.diffClient.setCurrentWorkingDirectory(cwd)
+	}
+
+	/**
+	 * Initialize the host bridge and all clients
+	 */
+	async initialize(): Promise<void> {
+		// Initialize workspace client
+		if ("initialize" in this.workspaceClient && typeof this.workspaceClient.initialize === "function") {
+			await this.workspaceClient.initialize()
+		}
+
+		// Initialize other clients if they have initialization methods
+		if ("initialize" in this.envClient && typeof this.envClient.initialize === "function") {
+			await this.envClient.initialize()
+		}
+		if ("initialize" in this.windowClient && typeof this.windowClient.initialize === "function") {
+			await this.windowClient.initialize()
+		}
+		if ("initialize" in this.diffClient && typeof this.diffClient.initialize === "function") {
+			await this.diffClient.initialize()
+		}
+	}
+
+	/**
+	 * Get workspace client
+	 */
+	getWorkspaceClient(): CliWorkspaceClient {
+		return this.workspaceClient
+	}
+
+	/**
+	 * Get environment client
+	 */
+	getEnvClient(): CliEnvClient {
+		return this.envClient
+	}
+
+	/**
+	 * Get window client
+	 */
+	getWindowClient(): CliWindowClient {
+		return this.windowClient
+	}
+
+	/**
+	 * Get diff client
+	 */
+	getDiffClient(): CliDiffClient {
+		return this.diffClient
 	}
 }

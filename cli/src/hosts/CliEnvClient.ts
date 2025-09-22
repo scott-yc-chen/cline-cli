@@ -79,7 +79,7 @@ export class CliEnvClient implements EnvServiceClientInterface {
 	/**
 	 * Reads text from clipboard
 	 */
-	async clipboardReadText(request: proto.cline.EmptyRequest): Promise<proto.cline.String> {
+	async clipboardReadText(_request: proto.cline.EmptyRequest): Promise<proto.cline.String> {
 		try {
 			// Try different clipboard utilities based on platform
 			let clipboardCommand: string[]
@@ -115,7 +115,7 @@ export class CliEnvClient implements EnvServiceClientInterface {
 	/**
 	 * Gets machine ID (generates a consistent ID based on system info)
 	 */
-	async getMachineId(request: proto.cline.EmptyRequest): Promise<proto.cline.String> {
+	async getMachineId(_request: proto.cline.EmptyRequest): Promise<proto.cline.String> {
 		if (this.machineId) {
 			return { value: this.machineId }
 		}
@@ -144,7 +144,7 @@ export class CliEnvClient implements EnvServiceClientInterface {
 	/**
 	 * Gets host version information
 	 */
-	async getHostVersion(request: proto.cline.EmptyRequest): Promise<proto.host.GetHostVersionResponse> {
+	async getHostVersion(_request: proto.cline.EmptyRequest): Promise<proto.host.GetHostVersionResponse> {
 		const packageInfo = await this.getPackageInfo()
 
 		return {
@@ -157,14 +157,14 @@ export class CliEnvClient implements EnvServiceClientInterface {
 	/**
 	 * Gets IDE redirect URI (not applicable for CLI)
 	 */
-	async getIdeRedirectUri(request: proto.cline.EmptyRequest): Promise<proto.cline.String> {
+	async getIdeRedirectUri(_request: proto.cline.EmptyRequest): Promise<proto.cline.String> {
 		return { value: "http://localhost:3000/cli-redirect" } // Placeholder
 	}
 
 	/**
 	 * Gets telemetry settings
 	 */
-	async getTelemetrySettings(request: proto.cline.EmptyRequest): Promise<proto.host.GetTelemetrySettingsResponse> {
+	async getTelemetrySettings(_request: proto.cline.EmptyRequest): Promise<proto.host.GetTelemetrySettingsResponse> {
 		return {
 			telemetryLevel: this.telemetrySettings.level,
 			isEnabled: this.telemetrySettings.isEnabled,
@@ -175,7 +175,7 @@ export class CliEnvClient implements EnvServiceClientInterface {
 	 * Subscribes to telemetry settings changes
 	 */
 	subscribeToTelemetrySettings(
-		request: proto.cline.EmptyRequest,
+		_request: proto.cline.EmptyRequest,
 		callbacks: StreamingCallbacks<proto.host.TelemetrySettingsEvent>,
 	): () => void {
 		// In CLI, telemetry settings don't change dynamically

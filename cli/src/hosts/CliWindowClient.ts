@@ -59,7 +59,7 @@ export class CliWindowClient implements WindowServiceClientInterface {
 				viewColumn: request.options?.viewColumn || 1,
 				isActive: true,
 			}
-		} catch (error) {
+		} catch (_error) {
 			this.displayMessage(`File not found: ${filePath}`, "error")
 			throw new Error(`File not found: ${filePath}`)
 		}
@@ -148,8 +148,8 @@ export class CliWindowClient implements WindowServiceClientInterface {
 			})
 
 			// Try to parse as number first
-			const numChoice = parseInt(answer.trim())
-			if (!isNaN(numChoice) && numChoice >= 1 && numChoice <= request.options.items.length) {
+			const numChoice = parseInt(answer.trim(), 10)
+			if (!Number.isNaN(numChoice) && numChoice >= 1 && numChoice <= request.options.items.length) {
 				return { selectedOption: request.options.items[numChoice - 1] }
 			}
 
@@ -255,21 +255,28 @@ export class CliWindowClient implements WindowServiceClientInterface {
 	/**
 	 * Gets list of open tabs (not applicable in CLI, returns empty)
 	 */
-	async getOpenTabs(request: proto.host.GetOpenTabsRequest): Promise<proto.host.GetOpenTabsResponse> {
+	async getOpenTabs(_request: proto.host.GetOpenTabsRequest): Promise<proto.host.GetOpenTabsResponse> {
 		return { paths: [] }
 	}
 
 	/**
 	 * Gets list of visible tabs (not applicable in CLI, returns empty)
 	 */
-	async getVisibleTabs(request: proto.host.GetVisibleTabsRequest): Promise<proto.host.GetVisibleTabsResponse> {
+	async getVisibleTabs(_request: proto.host.GetVisibleTabsRequest): Promise<proto.host.GetVisibleTabsResponse> {
 		return { paths: [] }
 	}
 
 	/**
 	 * Gets active editor info (returns current working directory context)
 	 */
-	async getActiveEditor(request: proto.host.GetActiveEditorRequest): Promise<proto.host.GetActiveEditorResponse> {
+	async getActiveEditor(_request: proto.host.GetActiveEditorRequest): Promise<proto.host.GetActiveEditorResponse> {
 		return { filePath: undefined }
+	}
+
+	/**
+	 * Shows an information message
+	 */
+	async showInformationMessage(message: string): Promise<void> {
+		this.displayMessage(message, "info")
 	}
 }

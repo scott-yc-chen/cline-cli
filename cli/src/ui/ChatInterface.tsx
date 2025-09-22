@@ -1,10 +1,13 @@
-import { Box, Text, TextInput } from "ink"
+import { TextInput } from "@inkjs/ui"
+import { Box, Text } from "ink"
 import React, { useEffect, useState } from "react"
+import { CliHostBridge } from "../hosts/CliHostBridge.js"
 
 interface ChatInterfaceProps {
 	initialTask?: string
 	model?: string
 	debug?: boolean
+	hostBridge: CliHostBridge
 }
 
 interface Message {
@@ -14,7 +17,7 @@ interface Message {
 	timestamp: Date
 }
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialTask, model, debug = false }) => {
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialTask, model, debug = false, hostBridge: _hostBridge }) => {
 	const [messages, setMessages] = useState<Message[]>([])
 	const [input, setInput] = useState("")
 	const [isProcessing, setIsProcessing] = useState(false)
@@ -73,7 +76,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialTask, model
 	}
 
 	const handleSubmit = (value: string) => {
-		if (!value.trim() || isProcessing) return
+		if (!value.trim() || isProcessing) {
+			return
+		}
 
 		const userMessage: Message = {
 			id: Date.now().toString(),

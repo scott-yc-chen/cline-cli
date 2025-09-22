@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es2020",
-		"module": "commonjs",
+		"module": "ESNext",
 		"lib": [
 			"es2020"
 		],
@@ -14,7 +14,7 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"allowSyntheticDefaultImports": true,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,

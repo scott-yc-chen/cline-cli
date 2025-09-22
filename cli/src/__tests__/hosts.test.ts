@@ -95,12 +95,9 @@ describe("CLI Host Bridge (Phase 2)", () => {
 			const missingFile = path.join(tempDir, "missing.txt")
 
 			try {
-				await windowClient
-					.showTextDocument({ path: missingFile })(
-						// Should not reach here
-						false,
-					)
-					.should.be.true()
+				const _result = await windowClient.showTextDocument({ path: missingFile })
+				// Should not reach here
+				false.should.be.true()
 			} catch (error: any) {
 				error.message.should.containEql("File not found")
 			}
@@ -137,7 +134,7 @@ describe("CLI Host Bridge (Phase 2)", () => {
 
 		it("should handle input box requests", async () => {
 			// Mock stdin for testing
-			const originalStdin = process.stdin
+			const _originalStdin = process.stdin
 
 			try {
 				// This test would need proper stdin mocking for full coverage

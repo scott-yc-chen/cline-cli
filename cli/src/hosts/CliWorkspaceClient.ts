@@ -110,7 +110,7 @@ export class CliWorkspaceClient implements WorkspaceServiceClientInterface {
 			// an editor state. We'll assume the operation was successful.
 			this.displayMessage(`💾 File access verified: ${request.filePath}`)
 			return { wasSaved: false } // No actual save operation needed
-		} catch (error) {
+		} catch (_error) {
 			this.displayMessage(`Cannot access file for saving: ${request.filePath}`, "warning")
 			return { wasSaved: false }
 		}
@@ -119,7 +119,7 @@ export class CliWorkspaceClient implements WorkspaceServiceClientInterface {
 	/**
 	 * Gets diagnostics from the workspace (attempts to run language server or linter)
 	 */
-	async getDiagnostics(request: proto.host.GetDiagnosticsRequest): Promise<proto.host.GetDiagnosticsResponse> {
+	async getDiagnostics(_request: proto.host.GetDiagnosticsRequest): Promise<proto.host.GetDiagnosticsResponse> {
 		const diagnostics: proto.host.Diagnostic[] = []
 
 		try {
@@ -146,7 +146,7 @@ export class CliWorkspaceClient implements WorkspaceServiceClientInterface {
 	/**
 	 * Opens problems panel (displays diagnostics in CLI)
 	 */
-	async openProblemsPanel(request: proto.host.OpenProblemsPanelRequest): Promise<proto.host.OpenProblemsPanelResponse> {
+	async openProblemsPanel(_request: proto.host.OpenProblemsPanelRequest): Promise<proto.host.OpenProblemsPanelResponse> {
 		this.displayMessage("🔍 Problems Panel")
 
 		// Get current diagnostics and display them
@@ -190,8 +190,12 @@ export class CliWorkspaceClient implements WorkspaceServiceClientInterface {
 
 				const sortedFiles = files.sort((a, b) => {
 					// Directories first, then alphabetical
-					if (a.isDirectory() && !b.isDirectory()) return -1
-					if (!a.isDirectory() && b.isDirectory()) return 1
+					if (a.isDirectory() && !b.isDirectory()) {
+						return -1
+					}
+					if (!a.isDirectory() && b.isDirectory()) {
+						return 1
+					}
 					return a.name.localeCompare(b.name)
 				})
 
@@ -216,7 +220,7 @@ export class CliWorkspaceClient implements WorkspaceServiceClientInterface {
 	 * Opens Cline sidebar panel (CLI equivalent - shows current status)
 	 */
 	async openClineSidebarPanel(
-		request: proto.host.OpenClineSidebarPanelRequest,
+		_request: proto.host.OpenClineSidebarPanelRequest,
 	): Promise<proto.host.OpenClineSidebarPanelResponse> {
 		this.displayMessage("🤖 Cline CLI Assistant")
 		this.displayMessage("Ready to help with your coding tasks!")
@@ -324,8 +328,8 @@ export class CliWorkspaceClient implements WorkspaceServiceClientInterface {
 
 				diagnostics.push({
 					source: source.trim(),
-					line: parseInt(lineNum),
-					character: parseInt(charNum),
+					line: parseInt(lineNum, 10),
+					character: parseInt(charNum, 10),
 					severity:
 						severity === "error"
 							? proto.host.DiagnosticSeverity.ERROR
@@ -356,8 +360,8 @@ export class CliWorkspaceClient implements WorkspaceServiceClientInterface {
 
 				diagnostics.push({
 					source: source.trim(),
-					line: parseInt(lineNum),
-					character: parseInt(charNum),
+					line: parseInt(lineNum, 10),
+					character: parseInt(charNum, 10),
 					severity: code.startsWith("E")
 						? proto.host.DiagnosticSeverity.ERROR
 						: code.startsWith("W")
@@ -371,5 +375,50 @@ export class CliWorkspaceClient implements WorkspaceServiceClientInterface {
 		}
 
 		return diagnostics
+	}
+
+	/**
+	 * Read directory contents
+	 */
+	async readDirectory(dirPath: string): Promise<{ name: string; type: number; size?: number }[]> {
+		try {
+			const entries = await fs.readdir(dirPath, { withFileTypes: true })
+			const result = []
+
+			for (const entry of entries) {
+				const entryPath = path.join(dirPath, entry.name)
+				let size: number | undefined
+
+				if (entry.isFile()) {
+					try {
+						const stats = await fs.stat(entryPath)
+						size = stats.size
+					} catch {
+						// Ignore stat errors
+					}
+				}
+
+				result.push({
+					name: entry.name,
+					type: entry.isFile() ? 1 : 2, // 1 = file, 2 = directory
+					size,
+				})
+			}
+
+			return result
+		} catch (error) {
+			throw new Error(`Failed to read directory ${dirPath}: ${error}`)
+		}
+	}
+
+	/**
+	 * Read file contents
+	 */
+	async readFile(filePath: string): Promise<string> {
+		try {
+			return await fs.readFile(filePath, "utf-8")
+		} catch (error) {
+			throw new Error(`Failed to read file ${filePath}: ${error}`)
+		}
 	}
 }
