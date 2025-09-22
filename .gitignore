@@ -36,4 +36,4 @@ webview-ui/src/services/grpc-client.ts
 test-results
 
 ## CLI pre-release  ##
-/cli 
+#/cli
