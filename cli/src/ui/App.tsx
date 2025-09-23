@@ -12,13 +12,21 @@ interface AppProps {
 	initialTask?: string
 	model?: string
 	apiKey?: string
+	apiUrl?: string
 	configPath?: string
 	debug?: boolean
 }
 
 type AppView = "chat" | "files" | "diff" | "tasks" | "settings"
 
-export const App: React.FC<AppProps> = ({ initialTask, model, apiKey: _apiKey, configPath: _configPath, debug = false }) => {
+export const App: React.FC<AppProps> = ({
+	initialTask,
+	model,
+	apiKey: _apiKey,
+	apiUrl: _apiUrl,
+	configPath: _configPath,
+	debug = false,
+}) => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [error, setError] = useState<string | null>(null)
 	const [_isInitialized, setIsInitialized] = useState(false)

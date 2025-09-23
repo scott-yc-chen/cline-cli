@@ -26,14 +26,36 @@ npm link
 ```
 
 ### Initial Configuration
+
+#### Standard OpenAI/Claude Setup
 ```bash
 # Set your AI model and API key
 cline config --model claude-3-sonnet
 cline config --api-key your-api-key-here
 
+# For OpenAI-compatible services (Ollama, LM Studio, etc.)
+cline config --api-url "http://localhost:11434/v1"
+cline config --model "llama3"
+
 # Initialize in a project directory
 cd your-project
 cline init
+```
+
+#### Using Environment Variables
+```bash
+# Standard OpenAI environment variables
+export OPENAI_API_BASE="http://localhost:11434/v1"
+export OPENAI_API_KEY="sk-your-key-here"
+export OPENAI_MODEL="llama3"
+
+# Cline-specific alternatives
+export CLINE_API_URL="http://localhost:11434/v1"
+export CLINE_API_KEY="sk-your-key-here"
+export CLINE_MODEL="llama3"
+
+# Now run without additional options
+cline "implement user authentication"
 ```
 
 ## Command Line Interface
@@ -59,22 +81,42 @@ cline "implement user authentication with JWT"
 cline "refactor this component to use hooks"
 cline "add tests for the payment module"
 
+# With custom API endpoint
+cline --api-url "http://localhost:11434/v1" --model "llama3" "implement user auth"
+
 # With file context
 cline "fix the bug in src/auth.ts" --file src/auth.ts
+```
+
+#### OpenAI-Compatible Services
+```bash
+# Ollama (local AI models)
+cline --api-url "http://localhost:11434/v1" --model "llama3" "optimize this function"
+
+# LM Studio (local model server)
+cline --api-url "http://localhost:1234/v1" --model "local-model" "add error handling"
+
+# Custom OpenAI-compatible endpoint
+cline --api-url "https://api.example.com/v1" --api-key "sk-..." --model "custom-model" "review code"
 ```
 
 #### Configuration Commands
 ```bash
 # View current configuration
-cline config
+cline config --list
 
-# Set AI model
+# Set AI model and provider
 cline config --model claude-3-sonnet
 cline config --model gpt-4
 cline config --model gemini-pro
 
-# Set API key
+# Set API key and URL
 cline config --api-key sk-your-key-here
+cline config --api-url "https://api.openai.com/v1"
+
+# Configure for local models
+cline config --api-url "http://localhost:11434/v1" --model "llama3"
+cline config --api-url "http://localhost:1234/v1" --model "local-model"
 
 # Set temperature (creativity level)
 cline config --temperature 0.7
@@ -236,8 +278,9 @@ Configure AI models, API keys, and UI preferences.
 #### Available Settings
 
 ##### AI Configuration
-- **Model Selection**: Choose between Claude, GPT, Gemini models
+- **Model Selection**: Choose between Claude, GPT, Gemini, or local models
 - **API Key**: Set your provider API key
+- **API URL**: Configure OpenAI-compatible endpoints (Ollama, LM Studio, etc.)
 - **Temperature**: Control creativity level (0.0-1.0)
 
 ##### UI Preferences
@@ -291,10 +334,18 @@ cline "optimize database queries" --dry-run
 ### AI Model Optimization
 
 #### Model Selection Guidelines
+
+##### Cloud Models
 - **Claude Sonnet**: Best for complex reasoning and code generation
 - **Claude Haiku**: Faster responses for simple tasks
 - **GPT-4**: Strong general programming capabilities
 - **GPT-3.5 Turbo**: Cost-effective for basic tasks
+
+##### Local Models (via Ollama/LM Studio)
+- **Llama 3**: Excellent general-purpose coding model
+- **CodeLlama**: Specialized for code generation and completion
+- **Mistral**: Fast and efficient for most programming tasks
+- **Qwen Coder**: Strong coding capabilities with multi-language support
 
 #### Temperature Settings
 - **0.0-0.3**: Deterministic, focused responses

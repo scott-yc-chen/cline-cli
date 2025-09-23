@@ -47,6 +47,7 @@ cline-cli/
 
 ### ✅ **Complete Feature Parity**
 - **Same AI Models**: Full support for Anthropic, OpenAI, Gemini, and all other providers
+- **OpenAI-Compatible APIs**: Native support for Ollama, LM Studio, and custom endpoints
 - **All Tools Available**: File operations, command execution, browser automation, MCP servers
 - **Interactive Chat**: Real-time conversation with AI assistant powered by Ink
 - **Project Understanding**: Full codebase analysis and context awareness
@@ -61,7 +62,8 @@ cline-cli/
 - **File Explorer**: Browse project files with icons, size display, and hidden file toggle
 - **Diff Viewer**: Visual code changes with apply/reject operations and color coding
 - **Task Manager**: Progress tracking with status visualization and subtask management
-- **Settings**: Configuration interface for AI models, API keys, and UI preferences
+- **Settings**: Configuration interface for AI models, API keys, URLs, and UI preferences
+- **Local AI Support**: Easy configuration for local models via environment variables
 - **Feature Parity**: Identical functionality to VSCode extension
 - **Easy Sync**: Regular upstream sync with minimal conflicts
 
@@ -86,6 +88,11 @@ The CLI replaces VSCode-specific implementations while keeping core logic unchan
 # Daily CLI development
 cd cli/
 npm run dev                    # Develop CLI features
+
+# Using with local AI models
+export OPENAI_API_BASE="http://localhost:11434/v1"
+export OPENAI_MODEL="llama3"
+npm run dev                    # Uses local Ollama
 
 # Sync with upstream Cline
 npm run sync                   # Merge upstream changes
@@ -114,7 +121,7 @@ cd cli/ && npm run build       # Rebuild with updates
 - FileExplorer.tsx for project navigation
 - DiffViewer.tsx for code changes
 - TaskManager.tsx for progress tracking
-- Settings.tsx for configuration
+- Settings.tsx for configuration with API URL support
 - Complete keyboard navigation and help system
 
 ### 🔄 **Phase 4: Integration** (Next)

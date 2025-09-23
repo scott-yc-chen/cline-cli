@@ -13,16 +13,23 @@ program
 	.argument("[task]", "Task to execute")
 	.option("-m, --model <model>", "AI model to use")
 	.option("-k, --api-key <key>", "API key for the AI service")
+	.option("-u, --api-url <url>", "API URL for OpenAI-compatible services")
 	.option("-c, --config <path>", "Path to configuration file")
 	.option("-d, --debug", "Enable debug mode")
 	.action(async (task, options) => {
 		try {
+			// Environment variable fallbacks
+			const model = options.model || process.env.OPENAI_MODEL || process.env.CLINE_MODEL
+			const apiKey = options.apiKey || process.env.OPENAI_API_KEY || process.env.CLINE_API_KEY
+			const apiUrl = options.apiUrl || process.env.OPENAI_API_BASE || process.env.CLINE_API_URL
+
 			// Render the Ink-based CLI application
 			const { waitUntilExit } = render(
 				React.createElement(App, {
 					initialTask: task,
-					model: options.model,
-					apiKey: options.apiKey,
+					model,
+					apiKey,
+					apiUrl,
 					configPath: options.config,
 					debug: options.debug,
 				}),
@@ -41,6 +48,7 @@ program
 	.description("Configure Cline CLI settings")
 	.option("--model <model>", "Set default AI model")
 	.option("--api-key <key>", "Set API key")
+	.option("--api-url <url>", "Set API URL")
 	.option("--list", "List current configuration")
 	.action(async (_options) => {
 		// TODO: Implement configuration management
