@@ -1,6 +1,6 @@
 import { Box, Text, useInput } from "ink"
 import React, { useState } from "react"
-import { CliHostBridge } from "../hosts/CliHostBridge.js"
+import { CliHostBridge } from "../hosts/CliHostBridge"
 
 interface TaskManagerProps {
 	hostBridge: CliHostBridge
@@ -318,7 +318,9 @@ export const TaskManager: React.FC<TaskManagerProps> = ({ hostBridge: _hostBridg
 				{currentTask.error && (
 					<>
 						<Box marginTop={1}>
-							<Text bold color="red">Error:</Text>
+							<Text bold color="red">
+								Error:
+							</Text>
 						</Box>
 						<Text color="red">{currentTask.error}</Text>
 					</>

@@ -1,6 +1,6 @@
 import { Box, Text, useInput } from "ink"
 import React, { useState } from "react"
-import { CliHostBridge } from "../hosts/CliHostBridge.js"
+import { CliHostBridge } from "../hosts/CliHostBridge"
 
 interface DiffViewerProps {
 	hostBridge: CliHostBridge

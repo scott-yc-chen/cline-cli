@@ -1,7 +1,7 @@
 import { Box, Text, useInput } from "ink"
 import path from "path"
 import React, { useEffect, useState } from "react"
-import { CliHostBridge } from "../hosts/CliHostBridge.js"
+import { CliHostBridge } from "../hosts/CliHostBridge"
 
 interface FileExplorerProps {
 	hostBridge: CliHostBridge

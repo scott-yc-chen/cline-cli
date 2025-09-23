@@ -1,7 +1,7 @@
 import { TextInput } from "@inkjs/ui"
 import { Box, Text } from "ink"
 import React, { useEffect, useState } from "react"
-import { CliHostBridge } from "../hosts/CliHostBridge.js"
+import { CliHostBridge } from "../hosts/CliHostBridge"
 
 interface ChatInterfaceProps {
 	initialTask?: string

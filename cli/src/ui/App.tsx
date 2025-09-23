@@ -1,12 +1,12 @@
 import { Box, Newline, Text, useInput } from "ink"
 import React, { useEffect, useState } from "react"
-import { CliHostBridge } from "../hosts/CliHostBridge.js"
-import { ChatInterface } from "./ChatInterface.js"
-import { DiffViewer } from "./DiffViewer.js"
-import { FileExplorer } from "./FileExplorer.js"
-import { LoadingSpinner } from "./LoadingSpinner.js"
-import { Settings } from "./Settings.js"
-import { TaskManager } from "./TaskManager.js"
+import { CliHostBridge } from "../hosts/CliHostBridge"
+import { ChatInterface } from "./ChatInterface"
+import { DiffViewer } from "./DiffViewer"
+import { FileExplorer } from "./FileExplorer"
+import { LoadingSpinner } from "./LoadingSpinner"
+import { Settings } from "./Settings"
+import { TaskManager } from "./TaskManager"
 
 interface AppProps {
 	initialTask?: string

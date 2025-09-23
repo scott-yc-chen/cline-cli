@@ -1,5 +1,5 @@
 import * as should from "should"
-import { CliHostBridge } from "../hosts/CliHostBridge.js"
+import { CliHostBridge } from "../hosts/CliHostBridge"
 
 describe("UI Host Bridge Integration", () => {
 	let hostBridge: CliHostBridge
