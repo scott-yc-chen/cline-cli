@@ -298,20 +298,19 @@ export const Settings: React.FC<SettingsProps> = ({ hostBridge }) => {
 				{settings.map((setting, index) => (
 					<Box flexDirection="column" key={setting.key} paddingX={1}>
 						<Box flexDirection="row">
-							<Text
-								backgroundColor={index === selectedIndex ? "blue" : undefined}
-								bold={index === selectedIndex}
-								color={index === selectedIndex ? "black" : "white"}
-								width={25}>
-								{setting.label}:
-							</Text>
+							<Box width={25}>
+								<Text
+									backgroundColor={index === selectedIndex ? "blue" : undefined}
+									bold={index === selectedIndex}
+									color={index === selectedIndex ? "black" : "white"}>
+									{setting.label}:
+								</Text>
+							</Box>
 
 							{editingIndex === index ? (
 								<TextInput
-									mask={setting.type === "password" ? "*" : undefined}
 									onChange={setEditValue}
 									placeholder={setting.type === "password" ? "Enter password..." : "Enter value..."}
-									value={editValue}
 								/>
 							) : (
 								<Text color={getValueColor(setting)}>{formatValue(setting)}</Text>

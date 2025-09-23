@@ -41,6 +41,7 @@ export interface EnvServiceClientInterface {
 	clipboardReadText(request: any): Promise<any>
 	getMachineId(request: any): Promise<any>
 	getHostVersion(request: any): Promise<any>
+	getHostname(request: any): Promise<any>
 	getIdeRedirectUri(request: any): Promise<any>
 	getTelemetrySettings(request: any): Promise<any>
 	subscribeToTelemetrySettings(request: any, callbacks: any): () => void

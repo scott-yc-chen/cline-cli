@@ -155,6 +155,20 @@ export class CliEnvClient implements EnvServiceClientInterface {
 	}
 
 	/**
+	 * Gets system hostname
+	 */
+	async getHostname(_request: proto.cline.EmptyRequest): Promise<proto.cline.String> {
+		try {
+			const hostname = os.hostname()
+			this.displayMessage(`🖥️ Hostname: ${hostname}`)
+			return { value: hostname }
+		} catch (error) {
+			this.displayMessage(`Error getting hostname: ${error}`, "error")
+			return { value: "unknown" }
+		}
+	}
+
+	/**
 	 * Gets IDE redirect URI (not applicable for CLI)
 	 */
 	async getIdeRedirectUri(_request: proto.cline.EmptyRequest): Promise<proto.cline.String> {

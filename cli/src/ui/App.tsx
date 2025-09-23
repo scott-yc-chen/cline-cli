@@ -150,9 +150,9 @@ export const App: React.FC<AppProps> = ({ initialTask, model, apiKey: _apiKey, c
 							{`Ctrl+${index + 1} ${getViewName(view)}`}
 						</Text>
 					))}
-					<Text color="yellow" marginLeft={2}>
-						Ctrl+H Help | Ctrl+C Exit
-					</Text>
+					<Box marginLeft={2}>
+						<Text color="yellow">Ctrl+H Help | Ctrl+C Exit</Text>
+					</Box>
 				</Box>
 			</Box>
 

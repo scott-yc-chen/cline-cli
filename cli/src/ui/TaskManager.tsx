@@ -301,25 +301,25 @@ export const TaskManager: React.FC<TaskManagerProps> = ({ hostBridge: _hostBridg
 				<Text bold>Description:</Text>
 				<Text color="gray">{currentTask.description}</Text>
 
-				<Text bold marginTop={1}>
-					Progress:
-				</Text>
+				<Box marginTop={1}>
+					<Text bold>Progress:</Text>
+				</Box>
 				<Text color="gray">
 					{getProgressBar(currentTask.progress)} {currentTask.progress}%
 				</Text>
 
-				<Text bold marginTop={1}>
-					Timing:
-				</Text>
+				<Box marginTop={1}>
+					<Text bold>Timing:</Text>
+				</Box>
 				<Text color="gray">Started: {currentTask.startTime?.toLocaleString() || "Not started"}</Text>
 				{currentTask.endTime && <Text color="gray">Completed: {currentTask.endTime.toLocaleString()}</Text>}
 				<Text color="gray">Duration: {formatDuration(currentTask.startTime, currentTask.endTime)}</Text>
 
 				{currentTask.error && (
 					<>
-						<Text bold color="red" marginTop={1}>
-							Error:
-						</Text>
+						<Box marginTop={1}>
+							<Text bold color="red">Error:</Text>
+						</Box>
 						<Text color="red">{currentTask.error}</Text>
 					</>
 				)}

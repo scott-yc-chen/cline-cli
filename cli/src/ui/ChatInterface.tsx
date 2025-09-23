@@ -150,8 +150,6 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialTask, model
 					onChange={setInput}
 					onSubmit={handleSubmit}
 					placeholder={isProcessing ? "Processing..." : "Type your message and press Enter..."}
-					showCursor
-					value={input}
 				/>
 			</Box>
 		</Box>

@@ -15,6 +15,7 @@ export class CliHostBridge implements HostBridgeClientProvider {
 	public readonly diffClient: CliDiffClient
 
 	private cwd: string
+	private outputHandler?: (message: string, type?: "info" | "error" | "warning") => void
 
 	constructor(cwd?: string) {
 		this.cwd = cwd || process.cwd()
