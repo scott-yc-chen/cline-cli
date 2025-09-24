@@ -1,6 +1,6 @@
 import { TextInput } from "@inkjs/ui"
-import { Box, Text } from "ink"
-import React, { useEffect, useState } from "react"
+import { Box, Text, useInput } from "ink"
+import React, { useEffect, useRef, useState } from "react"
 import { SimplifiedTaskManager } from "../core/SimplifiedTaskManager"
 import { CliHostBridge } from "../hosts/CliHostBridge"
 import { ClineMessage } from "../types/proto"
@@ -33,6 +33,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 	const [input, setInput] = useState("")
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [taskManager, setTaskManager] = useState<SimplifiedTaskManager | null>(null)
+	const [commandHistory, setCommandHistory] = useState<string[]>([])
+	const [historyIndex, setHistoryIndex] = useState(-1)
+	const [ctrlCCount, setCtrlCCount] = useState(0)
+	const inputRef = useRef<any>(null)
 
 	useEffect(() => {
 		const initializeTaskManager = async () => {
@@ -91,6 +95,57 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 		})
 	}, [initialTask, model, apiKey, apiUrl, hostBridge])
 
+	// Handle keyboard shortcuts
+	useInput((input, key) => {
+		// Handle Ctrl+C for exit (need to press twice)
+		if (key.ctrl && input === "c") {
+			if (ctrlCCount === 0) {
+				setCtrlCCount(1)
+				// Reset counter after 2 seconds if user doesn't press Ctrl+C again
+				setTimeout(() => setCtrlCCount(0), 2000)
+				console.log("\nPress Ctrl+C again to exit...")
+				return
+			} else {
+				console.log("\nExiting Cline CLI...")
+				process.exit(0)
+			}
+		}
+
+		// Reset Ctrl+C counter on any other input
+		if (ctrlCCount > 0) {
+			setCtrlCCount(0)
+		}
+
+		// Handle Ctrl+U to clear line to beginning
+		if (key.ctrl && input === "u") {
+			setInput("")
+			setHistoryIndex(-1)
+			return
+		}
+
+		// Handle up/down arrow keys for command history
+		if (key.upArrow && commandHistory.length > 0) {
+			const newIndex = historyIndex === -1 ? commandHistory.length - 1 : Math.max(0, historyIndex - 1)
+			setHistoryIndex(newIndex)
+			setInput(commandHistory[newIndex])
+			return
+		}
+
+		if (key.downArrow && commandHistory.length > 0) {
+			if (historyIndex === -1) return
+
+			const newIndex = historyIndex + 1
+			if (newIndex >= commandHistory.length) {
+				setHistoryIndex(-1)
+				setInput("")
+			} else {
+				setHistoryIndex(newIndex)
+				setInput(commandHistory[newIndex])
+			}
+			return
+		}
+	})
+
 	const processMessage = async (content: string, manager?: SimplifiedTaskManager) => {
 		setIsProcessing(true)
 
@@ -128,7 +183,15 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 		}
 
 		setMessages((prev) => [...prev, userMessage])
+
+		// Add command to history if it's not the same as the last command
+		if (commandHistory.length === 0 || commandHistory[commandHistory.length - 1] !== value) {
+			setCommandHistory((prev) => [...prev, value])
+		}
+
+		// Clear input and reset history index
 		setInput("")
+		setHistoryIndex(-1)
 		processMessage(value)
 	}
 
@@ -190,6 +253,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 					onChange={setInput}
 					onSubmit={handleSubmit}
 					placeholder={isProcessing ? "Processing..." : "Type your message and press Enter..."}
+					value={input}
 				/>
 			</Box>
 		</Box>
