@@ -65,7 +65,7 @@ export class SimplifiedTaskManager {
 		this.sendMessage({
 			type: "ask",
 			ask: "task_start",
-			text: `🤖 Starting task with model: ${model}\\n\\nUser request: "${userMessage}"\\n\\nAnalyzing request...`,
+			text: `🤖 Starting task with model: ${model}\n\nUser request: "${userMessage}"\n\nAnalyzing request...`,
 		})
 
 		// Simulate analysis delay
@@ -110,7 +110,7 @@ export class SimplifiedTaskManager {
 			this.sendMessage({
 				type: "say",
 				say: "text",
-				text: `⚙️  Processing with ${model}...\\n\\nThis is a demonstration of CLI integration capabilities.\\n\\n✅ Host bridge: Connected\\n✅ File system: Accessible\\n✅ Environment: Detected\\n✅ Configuration: Valid`,
+				text: `⚙️  Processing with ${model}...\n\nThis is a demonstration of CLI integration capabilities.\n\n✅ Host bridge: Connected\n✅ File system: Accessible\n✅ Environment: Detected\n✅ Configuration: Valid`,
 			})
 
 			await new Promise((resolve) => setTimeout(resolve, 1500))
@@ -119,7 +119,7 @@ export class SimplifiedTaskManager {
 			this.sendMessage({
 				type: "say",
 				say: "text",
-				text: `🎉 Task completed successfully!\\n\\nThe Cline CLI is ready for AI integration. Key achievements:\\n\\n• ✅ CLI host bridge implementation complete\\n• ✅ Terminal UI with Ink components\\n• ✅ File system operations working\\n• ✅ Multi-view navigation (Ctrl+1-5)\\n• ✅ Configuration management\\n\\nNext steps: Connect to actual AI models and implement full tool integration.`,
+				text: `🎉 Task completed successfully!\n\nThe Cline CLI is ready for AI integration. Key achievements:\n\n• ✅ CLI host bridge implementation complete\n• ✅ Terminal UI with Ink components\n• ✅ File system operations working\n• ✅ Multi-view navigation (Ctrl+1-5)\n• ✅ Configuration management\n\nNext steps: Connect to actual AI models and implement full tool integration.`,
 			})
 		} catch (error) {
 			this.sendMessage({
