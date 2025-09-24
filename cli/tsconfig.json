@@ -7,7 +7,6 @@
 		],
 		"declaration": true,
 		"outDir": "./dist",
-		"rootDir": "./src",
 		"strict": false,
 		"skipLibCheck": true,
 		"noImplicitAny": false,
@@ -19,14 +18,41 @@
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedIndexedAccess": true,
-		"jsx": "react-jsx"
+		"jsx": "react-jsx",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": [
+				"../src/*"
+			],
+			"@shared/*": [
+				"../src/shared/*"
+			],
+			"@core/*": [
+				"../src/core/*"
+			],
+			"@hosts/*": [
+				"../src/hosts/*"
+			],
+			"@integrations/*": [
+				"../src/integrations/*"
+			],
+			"@services/*": [
+				"../src/services/*"
+			],
+			"@utils/*": [
+				"../src/utils/*"
+			]
+		}
 	},
 	"include": [
 		"src/**/*"
 	],
 	"exclude": [
 		"node_modules",
-		"dist"
+		"dist",
+		"src/core/CliTaskManager.ts",
+		"src/providers/CliWebviewProvider.ts",
+		"src/providers/CliDiffViewProvider.ts"
 	],
 	"ts-node": {
 		"esm": true,

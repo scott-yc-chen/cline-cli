@@ -240,3 +240,29 @@ export namespace cline {
 		OFF = 3,
 	}
 }
+
+// Basic proto message types for CLI implementation
+export interface ClineMessage {
+	type?: "ask" | "say"
+	text?: string
+	ask?: string
+	say?: string
+}
+
+// Additional types for workspace and environment
+export interface WorkspaceFile {
+	path: string
+	name: string
+	size: number
+	type: "file" | "directory"
+}
+
+export interface WorkspaceFilesResponse {
+	files: WorkspaceFile[]
+}
+
+export interface EnvInfoResponse {
+	platform: string
+	arch: string
+	version: string
+}

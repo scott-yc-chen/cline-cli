@@ -109,7 +109,16 @@ export const App: React.FC<AppProps> = ({
 
 		switch (currentView) {
 			case "chat":
-				return <ChatInterface debug={debug} hostBridge={hostBridge} initialTask={initialTask} model={model} />
+				return (
+					<ChatInterface
+						apiKey={_apiKey}
+						apiUrl={_apiUrl}
+						debug={debug}
+						hostBridge={hostBridge}
+						initialTask={initialTask}
+						model={model}
+					/>
+				)
 			case "files":
 				return <FileExplorer hostBridge={hostBridge} />
 			case "diff":

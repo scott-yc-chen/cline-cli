@@ -1,11 +1,15 @@
 import { TextInput } from "@inkjs/ui"
 import { Box, Text } from "ink"
 import React, { useEffect, useState } from "react"
+import { SimplifiedTaskManager } from "../core/SimplifiedTaskManager"
 import { CliHostBridge } from "../hosts/CliHostBridge"
+import { ClineMessage } from "../types/proto"
 
 interface ChatInterfaceProps {
 	initialTask?: string
 	model?: string
+	apiKey?: string
+	apiUrl?: string
 	debug?: boolean
 	hostBridge: CliHostBridge
 }
@@ -17,51 +21,87 @@ interface Message {
 	timestamp: Date
 }
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialTask, model, debug = false, hostBridge: _hostBridge }) => {
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({
+	initialTask,
+	model,
+	apiKey,
+	apiUrl,
+	debug = false,
+	hostBridge,
+}) => {
 	const [messages, setMessages] = useState<Message[]>([])
 	const [input, setInput] = useState("")
 	const [isProcessing, setIsProcessing] = useState(false)
+	const [taskManager, setTaskManager] = useState<SimplifiedTaskManager | null>(null)
 
 	useEffect(() => {
-		// Add welcome message
-		const welcomeMessage: Message = {
-			id: "welcome",
-			type: "system",
-			content: `Welcome to Cline CLI! I'm your AI coding assistant.\n${
-				model ? `Using model: ${model}` : "No model specified - configure with --model"
-			}\n\nType your task or question below:`,
-			timestamp: new Date(),
-		}
-		setMessages([welcomeMessage])
+		const initializeTaskManager = async () => {
+			// Initialize TaskManager
+			const manager = new SimplifiedTaskManager(hostBridge)
+			await manager.initialize()
 
-		// Process initial task if provided
-		if (initialTask) {
-			const userMessage: Message = {
-				id: Date.now().toString(),
-				type: "user",
-				content: initialTask,
+			// Set up callbacks for AI messages
+			manager.setMessageCallback((clineMessage: ClineMessage) => {
+				const content = clineMessage.text || (clineMessage.type === "say" ? "AI is thinking..." : "Processing...")
+
+				const message: Message = {
+					id: Date.now().toString(),
+					type: "assistant",
+					content,
+					timestamp: new Date(),
+				}
+				setMessages((prev) => [...prev, message])
+			})
+
+			setTaskManager(manager)
+
+			// Add welcome message
+			const welcomeMessage: Message = {
+				id: "welcome",
+				type: "system",
+				content: `Welcome to Cline CLI! I'm your AI coding assistant.\n${
+					model ? `Using model: ${model}` : "No model specified - configure with --model"
+				}\n${apiKey ? "API key configured" : "No API key specified - configure with --api-key"}\n\nType your task or question below:`,
 				timestamp: new Date(),
 			}
-			setMessages((prev) => [...prev, userMessage])
-			processMessage(initialTask)
-		}
-	}, [initialTask, model])
+			setMessages([welcomeMessage])
 
-	const processMessage = async (content: string) => {
+			// Process initial task if provided
+			if (initialTask) {
+				const userMessage: Message = {
+					id: Date.now().toString(),
+					type: "user",
+					content: initialTask,
+					timestamp: new Date(),
+				}
+				setMessages((prev) => [...prev, userMessage])
+				await processMessage(initialTask, manager)
+			}
+		}
+
+		initializeTaskManager().catch((error) => {
+			console.error("Failed to initialize TaskManager:", error)
+			const errorMessage: Message = {
+				id: "error",
+				type: "system",
+				content: `Error initializing AI system: ${error.message}`,
+				timestamp: new Date(),
+			}
+			setMessages([errorMessage])
+		})
+	}, [initialTask, model, apiKey, apiUrl, hostBridge])
+
+	const processMessage = async (content: string, manager?: SimplifiedTaskManager) => {
 		setIsProcessing(true)
 
 		try {
-			// TODO: Integrate with Cline core AI processing
-			await new Promise((resolve) => setTimeout(resolve, 1000)) // Temporary delay
-
-			const responseMessage: Message = {
-				id: Date.now().toString(),
-				type: "assistant",
-				content: `I received your message: "${content}"\n\nThis is a placeholder response. The actual AI integration is coming soon!`,
-				timestamp: new Date(),
+			const currentManager = manager || taskManager
+			if (!currentManager) {
+				throw new Error("TaskManager not initialized")
 			}
 
-			setMessages((prev) => [...prev, responseMessage])
+			// Start AI task with the message content
+			await currentManager.startTask(content, model, apiKey, apiUrl)
 		} catch (error) {
 			const errorMessage: Message = {
 				id: Date.now().toString(),
