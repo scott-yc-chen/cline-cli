@@ -18,6 +18,12 @@ pnpm-lock.yaml
 webview-ui/src/**/*.js
 webview-ui/src/**/*.js.map
 
+# TypeScript compiled output
+src/**/*.js
+src/**/*.d.ts
+!src/**/*.ts
+cli/dist/
+
 # Ignore coverage directories and files
 coverage
 coverage-unit
