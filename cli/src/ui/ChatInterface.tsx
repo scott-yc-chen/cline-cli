@@ -49,7 +49,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 				const content = clineMessage.text || (clineMessage.type === "say" ? "AI is thinking..." : "Processing...")
 
 				const message: Message = {
-					id: Date.now().toString(),
+					id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
 					type: "assistant",
 					content,
 					timestamp: new Date(),
@@ -95,10 +95,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 		})
 	}, [initialTask, model, apiKey, apiUrl, hostBridge])
 
-	// Handle keyboard shortcuts
-	useInput((input, key) => {
+	// Handle keyboard shortcuts (minimal interference)
+	useInput((inputChar, key) => {
 		// Handle Ctrl+C for exit (need to press twice)
-		if (key.ctrl && input === "c") {
+		if (key.ctrl && inputChar === "c") {
 			if (ctrlCCount === 0) {
 				setCtrlCCount(1)
 				// Reset counter after 2 seconds if user doesn't press Ctrl+C again
@@ -114,35 +114,6 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 		// Reset Ctrl+C counter on any other input
 		if (ctrlCCount > 0) {
 			setCtrlCCount(0)
-		}
-
-		// Handle Ctrl+U to clear line to beginning
-		if (key.ctrl && input === "u") {
-			setInput("")
-			setHistoryIndex(-1)
-			return
-		}
-
-		// Handle up/down arrow keys for command history
-		if (key.upArrow && commandHistory.length > 0) {
-			const newIndex = historyIndex === -1 ? commandHistory.length - 1 : Math.max(0, historyIndex - 1)
-			setHistoryIndex(newIndex)
-			setInput(commandHistory[newIndex])
-			return
-		}
-
-		if (key.downArrow && commandHistory.length > 0) {
-			if (historyIndex === -1) return
-
-			const newIndex = historyIndex + 1
-			if (newIndex >= commandHistory.length) {
-				setHistoryIndex(-1)
-				setInput("")
-			} else {
-				setHistoryIndex(newIndex)
-				setInput(commandHistory[newIndex])
-			}
-			return
 		}
 	})
 
@@ -222,15 +193,21 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 	}
 
 	return (
-		<Box flexDirection="column" flexGrow={1}>
+		<Box flexDirection="column" height="100%" minHeight={20}>
 			{/* Messages */}
-			<Box flexDirection="column" flexGrow={1} marginBottom={1}>
+			<Box flexDirection="column" flexGrow={1} marginBottom={1} overflow="hidden">
 				{messages.map((message) => (
 					<Box flexDirection="column" key={message.id} marginBottom={1}>
 						<Text bold color={getMessageColor(message.type)}>
 							{getMessagePrefix(message.type)}
 						</Text>
-						<Text>{message.content}</Text>
+						<Box flexDirection="column">
+							{message.content.split("\n").map((line, index) => (
+								<Text key={index} wrap="wrap">
+									{line}
+								</Text>
+							))}
+						</Box>
 						{debug && (
 							<Text color="gray" dimColor>
 								{message.timestamp.toLocaleTimeString()}
@@ -247,14 +224,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 			</Box>
 
 			{/* Input */}
-			<Box borderColor="gray" borderStyle="single" padding={1}>
+			<Box flexShrink={0} paddingY={1}>
 				<Text color="gray">{"> "}</Text>
-				<TextInput
-					onChange={setInput}
-					onSubmit={handleSubmit}
-					placeholder={isProcessing ? "Processing..." : "Type your message and press Enter..."}
-					value={input}
-				/>
+				<TextInput onChange={setInput} onSubmit={handleSubmit} placeholder={isProcessing ? "Processing..." : ""} />
 			</Box>
 		</Box>
 	)
